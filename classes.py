@@ -71,6 +71,7 @@ class Region:
                 return (closest,dist(pt,closest))
 
     def uniform_sample(self):
+        """ Sample point uniformly at random from region. """
         pt = (random.random(),random.random()) # generate sample
         pt = (self.lower_left[0]*(pt[0]-1.)+self.upper_right[0]*pt[0],self.lower_left[1]*(pt[1]-1.)+self.upper_right[1]*pt[1]) # scale to live within self
         return pt

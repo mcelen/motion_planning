@@ -1,6 +1,95 @@
 from math import *
 from numpy import *
 from cvxpy import *
+import classes
+
+def dist(p1,p2):
+    """ Returns distance between p1 and p2. """
+    return ((p1[0] - p2[0])**2 + (p1[1]-p2[1])**2)**(.5)
+
+def GenerateBubble(pt,obs):
+    """ Returns tuple (center,radius,closestpt), where radius is the that of the largest circle centered at pt that does not overlap and obstacle, and closestpt is the closest point to pt on an obstacle. """
+
+    distances = []
+    points = []
+
+    # For each obstacle, find the closest point and its distance to pt.
+    for obstacle in obs:
+        result = obstacle.dist_to_point(pt) # result is tuple (closestpt,distance)
+        distances.append(result[1])
+        points.append(result[0])
+
+    # Of all these points and distances, find the minimum.
+    min_dist = min(distances)
+    min_point = points[argmin(array(distances))]
+
+    return (pt,min(distances),min_point)
+
+    
+def TranslateBubble(bubble,r_l,obs):
+    """ Attempts to translate bubble along normal to closest obstacle so that it has a radius as close to r_l as possible. """
+
+    # This function uses binary search.
+    # bubble is (center,radius,closestpt)
+    #
+    # ======closestpt----------center----pt--------ptmax
+    # ==========                   1-alpha  alpha
+    # obstacle==
+    # ==========
+    # ==========
+    # 
+    # It extends the line from closestpt to center to ptmax such that ||ptmax - closestpt||=r_l
+    # It then binary searches the interval [center,ptmax] for the point pt closest to ptmax
+    # such that the bubble centered at pt and going through closestpt does not overlap any obstacles.
+    # The binary search is parameterized by alpha in [0,1], the parameter describing the 
+    # weighted convex combination of center and ptmax.
+
+    # Find furthest point we will search, called ptmax
+    pt = bubble[0]
+    min_point = bubble[2]
+    ptmax = (min_point[0] + r_l/dist(pt,min_point)*(pt[0]-min_point[0]),min_point[1] + r_l/dist(pt,min_point)*(pt[1]-min_point[1]))
+    
+    # Check if ptmax is at least distance r_l from all obstacles
+    distances = []
+    for obstacle in obs:
+        distances.append(obstacle.dist_to_point(ptmax)[1])
+    if min(distances) >= r_l:
+        return (ptmax,r_l,min_point)
+        
+    # Binary search alpha in [0,1] the points alpha*ptmax + (1-alpha)*pt
+    alpha_max = 1.
+    alpha_min = 0.    
+    tol = .001
+    while alpha_max > alpha_min + tol:
+        alpha = (alpha_max+alpha_min)/2
+        ptnew = (alpha*ptmax[0] + (1-alpha)*pt[0],alpha*ptmax[1] + (1-alpha)*pt[1])
+        distances = []
+        for obstacle in obs:
+            distances.append(obstacle.dist_to_point(ptnew)[1])
+        if min(distances) >= alpha*r_l + (1-alpha)*bubble[1]-10e-10: # 10e-10 is to ensure robustness of inequailty to numerical error
+            alpha_min = alpha
+        else:
+            alpha_max = alpha
+    bestpt = (alpha_min*ptmax[0] + (1-alpha_min)*pt[0],alpha_min*ptmax[1] + (1-alpha_min)*pt[1])
+    return (bestpt,alpha_min*r_l + (1-alpha_min)*bubble[1],min_point)
+    
+def BubbleGeneration(P,obs,r_l):
+    """ Generates bubbles centered at P that do not intersect obstacles, and attempts to translate them if they are too small. Return list of their centers and radii. """
+    A = [P[0]]
+    R = [0]
+    for i in range(1,len(P)):
+        if dist(P[i],A[i-1])  < .5*R[i-1]:
+            A.append(A[i-1])
+            R.append(R[i-1])
+            continue 
+        bubble = GenerateBubble(P[i],obs)
+        R.append(bubble[1])
+        A.append(bubble[0])
+        if R[i] < r_l:
+            bubble = TranslateBubble(bubble,r_l,obs)
+            R[i] = bubble[1]
+            A[i] = bubble[0]
+    return[A,R]
 
 def elastic_stretching(P,v,u,bubbles):
 	""" Returns new waypoints P of smoothed path """
@@ -91,7 +180,7 @@ def speed_optimization(P):
 	# Add Constraints
 	constraints = [abs(u[:,0]) <= Ulong,(b[1:]-b[:-1])/(n-1.) == 2.*a,square(u)*ones((2,1)) <= (mu*m*g)**2,b[0] == 0,b[-1]==0]
 	for i in  range(n-1):
-	    R = asmatrix([[sp[i,0],sp[i,1]],[-sp[i,1],sp[i,0]]])/(sum(asarray(sp[i,:])**2)**(.5))
+	    R = asmatrix([[sp[i,0],sp[i,1]],[- sp[i,1],sp[i,0]]])/(sum(asarray(sp[i,:])**2)**(.5))
 	    more_constraints = [u[i,:]*R == m*sp[i:i+1,:]*a[i] + m*spp[i:i+1,:]*(b[i]+b[i+1])/2.]
 	    constraints.extend(more_constraints)
 
