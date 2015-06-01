@@ -4,7 +4,7 @@ import random
 def dist(p1,p2):
 	return sqrt((p1[0] - p2[0])**2 + (p1[1]-p2[1])**2)
 
-class Obstacle:
+class Region:
 
     def __init__(self,ll,ur):
         """ Initializes with lower_left corner and upper_right corner coordinates. """

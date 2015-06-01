@@ -12,9 +12,9 @@ k = 1000
 rk = .05
 k = 1000
 rk = .05
-region = classes.Obstacle((0.,0.),(1.,1.))
-obs = [classes.Obstacle((.1,.1),(.4,.4)),classes.Obstacle((.6,.6),(.9,.9)),classes.Obstacle((.6,.1),(1.0,.5))]
-goal = classes.Obstacle((.9,.9),(1.,1.))
+region = classes.Region((0.,0.),(1.,1.))
+obs = [classes.Region((.1,.1),(.4,.4)),classes.Region((.6,.6),(.9,.9)),classes.Region((.6,.1),(1.0,.5))]
+goal = classes.Region((.9,.9),(1.,1.))
 max_iter = 1000
 
 # FMT Algorithm
