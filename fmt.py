@@ -24,8 +24,8 @@ def dist(p1,p2):
     """ Returns distance between p1 and p2. """
     return sqrt((p1[0] - p2[0])**2 + (p1[1]-p2[1])**2)
 
-# TO IMPLEMENT
 def CollisionFree(p1,p2,obs):
+    """ Creates fine discretization of line segment between p1 and p2, and checks if any point on segment are within the obstacles in obs. """
     x=linspace(p1[0],p2[0],100)
     y=linspace(p1[1],p2[1],100)
     for i in range(0,len(x)):
