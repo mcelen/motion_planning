@@ -1,0 +1,116 @@
+========= fmt.py =========
+
+DATA STRUCTURES
+
+List of Points: V
+-----------------
+A list of all sampled points in our space, where each point is a tuple: [(x0,y0),(x1,y1),...,(xN,yN)]
+(x0,y0) is the initial point xinit
+The algorithm never changes V after initial sampling.
+The index in V of a point is used to refer to the point throughout the algorithm as pID or zID.
+
+Points not in tree: W
+---------------------
+A set of indices of points not yet added to the tree, where indices refer to locations in the list V.
+
+Nearby points and associated info: neighbors
+--------------------------------------------
+A dictionary whose keys are point IDs, and whose values are a data structure containing information about
+the points close to that point (that is, those points returned by Near()).
+In particular, for the key pID, the data structure associated with pID is a list containing
+	(0) A dictionary whose keys are the IDs of nearby points, and whose values are a list of the cost
+	of arriving at that point from pID, and an integer indicating whether the segment from pID to that
+	point hits an obstacle. Ie. {neighbID1:[cost,hits_obstacle],neighbID2:[cost,hits_obstacle],...}
+	(1) A set containing the IDs of the nearby points. Ie. {neighbID1,neighbID2,...}
+In total, one key-value pair of neighbors looks like:
+	pID:[{neighbID1:[cost,hits_obstacle],neighbID2:[cost,hits_obstacle],...},{neighbID1,neighb/.ID2,...}]
+The Near and Save functions are combined into just the Near function, which simply updates this global
+data structure by adding the key-value pair for the requested point.
+
+Frontier of tree: H and Hheap
+-----------------------------
+Keeps track of those points to which we may connect points being added to the tree.
+H is a set of indices of points, already members of the tree, contained in H, where indices refer to 
+locations in the list V.
+Hheap is a binary min heap, ordered by the distance from xinit in our tree of each pID. It contains
+tuples of the form (cost,pID).
+
+Cost dictionary: Cost
+---------------------
+A dictionary whose keys are the point IDs, and whose values are the cost for reaching that point via
+our tree.
+Instead of implementing a Cost function, we simply access entries of this dictionary.
+The cost only has to be computed when we first add a point to the dictionary.
+
+Tree Graph as dictionary: E
+---------------------------
+The tree graph is a dictionary whose keys are the pIDs of the non-base nodes of our tree, and the
+values are the parent nodes of those nodes. This allows us to easily read off the path from any node
+to the base from E. For example, the following tree:
+			3
+		1 <	4
+	0 <	  			has representation E = {3:1,4:1,5:2,6:2,1:0,2:0}
+		2 < 5
+			6
+
+EXPORTED FUNCTIONS
+
+GenerateBubble(pt,obs)
+----------------------
+Returns tuple (center,radius,closestpoint).
+The largest bubbles centered at pt that does not intersect an obstacle has radius equal to the 
+distance to the closest obstacle. radius is that distance. closestpoint is the point on that
+obstacle which is distance radius from pt. center is the pt passed to the function.
+Knowing this point is essential for the TranslateBubble function.
+
+TranslateBubble(bubble,r_l,obs)
+-------------------------------
+Attempts to translate bubble along the normal to the closest obstacle so that it has largest possible
+radius less than r_l without overlapping any obstacle.
+bubble is (center,radius,closestpt), where closestpt is the closest point of an obstacle.
+Hence, the normal is the line from closestpt to center.
+
+BubbleGeneration(P,obs,r_l)
+-------------------------------
+Generates a bubble around the points P that do not intersect any obstacles. First creates the largest
+possibe bubble with that center. If that radius is below r_l, attempts to enlarge the 
+bubble to radius r_l by translating the center of the bubble. Uses GenerateBubble and 
+TranslateBubble.
+
+========= classes.py =========
+
+CLASSES
+
+Obstacle
+--------
+Methods:
+	--- 
+
+========= trajectory_optimization.py =========
+
+EXPORTED FUNCTIONS
+
+elastic_stretching(P,v,u,bubbles)
+---------------------------------
+Returns new waypoints P of smoothed path
+
+speed_optimization(P)
+---------------------
+Return speeds and controls, defined at the midpoints between the waypoints in P, in tuple (v,u).
+
+
+========= trajectory_plotting.py =========
+
+EXPORTED FUNCTIONS
+
+PlotRegion(region)
+------------------
+Adds rectangular obstacle given by region to current plot.
+
+PlotBubbles(bubbles)
+--------------------
+Plots bubbles given by the centers and radii found in bubbles.
+
+PlotTrajectory(P)
+-----------------
+Plots waypoints and joining edges found in P.
