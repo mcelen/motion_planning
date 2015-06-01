@@ -1,5 +1,6 @@
 from math import *
 import random
+import matplotlib.pyplot as plt
 
 def dist(p1,p2):
 	return sqrt((p1[0] - p2[0])**2 + (p1[1]-p2[1])**2)
@@ -73,7 +74,17 @@ class Region:
         pt = (random.random(),random.random()) # generate sample
         pt = (self.lower_left[0]*(pt[0]-1.)+self.upper_right[0]*pt[0],self.lower_left[1]*(pt[1]-1.)+self.upper_right[1]*pt[1]) # scale to live within self
         return pt
-                    
+
+    def plot_region(self):
+        """ Adds rectangular obstacle given by region to current plot. """
+        x_ll=self.lower_left[0]
+        y_ll=self.lower_left[1]
+        x_ur=self.upper_right[0]
+        y_ur=self.upper_right[1]
+        x=[x_ll,x_ur,x_ur,x_ll,x_ll]
+        y=[y_ll,y_ll,y_ur,y_ur,y_ll]
+        plt.plot(x,y)
+                        
 
 
 

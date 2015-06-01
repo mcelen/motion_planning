@@ -2,16 +2,6 @@ import classes
 import matplotlib.pyplot as plt
 from numpy import *
 
-def PlotRegion(region):
-	""" Adds rectangular obstacle given by region to current plot. """
-	x_ll=region.lower_left[0]
-	y_ll=region.lower_left[1]
-	x_ur=region.upper_right[0]
-	y_ur=region.upper_right[1]
-	x=[x_ll,x_ur,x_ur,x_ll,x_ll]
-	y=[y_ll,y_ll,y_ur,y_ur,y_ll]
-	plt.plot(x,y)
-
 def PlotBubbles(bubbles):
 	""" Plots bubbles given by the centers and radii found in bubbles. """
 

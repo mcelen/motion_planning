@@ -28,8 +28,8 @@ if path[1] == 0:
 
 	# Plot
 	for obstacle in obs:
-	    PlotRegion(obstacle)
-	PlotRegion(goal)
+	    obstacle.plot_region()
+	goal.plot_region()
 	PlotTrajectory(P)
 	PlotBubbles(bubbles)
 
@@ -48,8 +48,8 @@ if path[1] == 0:
 
 	# Plot Smoothed Path and Clear
 	for obstacle in obs:
-	    PlotRegion(obstacle)
-	PlotRegion(goal)
+	    obstacle.plot_region()
+	goal.plot_region()
 	PlotTrajectory(P)
 	PlotBubbles(bubbles)
 	plt.savefig("ex1_smoothed_path.pdf")
