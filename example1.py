@@ -1,7 +1,7 @@
 # This example demonstrates calling our code to run our algorithms on a simple geometry.
 # It plots the results.
 
-import classes
+import region
 from numpy import *
 import matplotlib.pyplot as plt
 from trajectory_optimization import *
