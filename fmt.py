@@ -1,5 +1,4 @@
 import classes
-import random
 from math import *
 from heapq import *
 from numpy import *
@@ -16,8 +15,7 @@ def SampleFree(k,obs,region):
     # Does not check for duplicate points, but duplicates are exceedingly unlikely.
     points = []
     while len(points) < k:
-        pt = (random.random(),random.random()) # generate sample
-        pt = (region.lower_left[0]*(pt[0]-1.)+region.upper_right[0]*pt[0],region.lower_left[1]*(pt[1]-1.)+region.upper_right[1]*pt[1]) # scale to live within region
+        pt = region.uniform_sample()
         if not in_any_obstacle(obs,pt):
             points.append(pt)
     return points
