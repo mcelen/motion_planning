@@ -33,7 +33,7 @@ def TranslateBubble(bubble,r_l,obs):
     # bubble is (center,radius,closestpt)
     #
     # ======closestpt----------center----pt--------ptmax
-    # ==========                   1-alpha  alpha
+    # ==========                   alpha    1 - alpha
     # obstacle==
     # ==========
     # ==========

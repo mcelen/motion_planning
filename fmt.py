@@ -107,7 +107,6 @@ def FMT(k,rk,xinit,region,obs,goal,max_iter,with_plotting = False):
     # for an addition to the tree (which may or may not connect z).
     # In the body of the loop, zID is still in H, but not in Hheap, as we just popped in from Hheap.
     while not goal.contains_point(z) and iteration < max_iter:
-        print iteration
         # Initilize strcture for holding points added to tree
         Hnew = set([])
 

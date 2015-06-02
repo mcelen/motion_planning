@@ -8,6 +8,7 @@ from trajectory_optimization import *
 from trajectory_plotting import *
 from fmt import *
 
+
 k = 1000
 rk = .05
 workspace = region.Region((0.,0.),(1.,1.))
