@@ -1,7 +1,8 @@
-import classes
+import region
 from math import *
 from heapq import *
 from numpy import *
+import matplotlib.pyplot as plt
 
 def in_any_obstacle(obs,pt):
     """ Determines whether pt is within any of the obstacles in obs. Returns True or False. """
@@ -67,13 +68,12 @@ def ComputeMin(Ynear,Cost,xID,neighbors):
 
     return (ymin,curr_cost)
 
-def FMT(k,rk,region,obs,goal,max_iter):
+def FMT(k,rk,xinit,region,obs,goal,max_iter,with_plotting = False):
     """ Implements FMT Algorithm. Returns path to destination as list of points, and indication of failure, in tuple (path,failure). """
 
     ### DATA STRUCTURES INITIALIZATION ###
 
     # Sample points and initialize V
-    xinit = (.5,.1)
     V = [xinit]
     for pt in SampleFree(k,obs,region):
         V.append(pt)
@@ -107,6 +107,7 @@ def FMT(k,rk,region,obs,goal,max_iter):
     # for an addition to the tree (which may or may not connect z).
     # In the body of the loop, zID is still in H, but not in Hheap, as we just popped in from Hheap.
     while not goal.contains_point(z) and iteration < max_iter:
+        print iteration
         # Initilize strcture for holding points added to tree
         Hnew = set([])
 
@@ -121,9 +122,11 @@ def FMT(k,rk,region,obs,goal,max_iter):
             Ynear = H & neighbors[xID][1]
             Ymin =  ComputeMin(Ynear,Cost,xID,neighbors) # Ymin is tuple (yID,cost(yID))
 
-            # If the path to the closes point is collision free, include the candidate in the tree.
+            # If the path to the closest point is collision free, include the candidate in the tree.
             if CollisionFree(V[Ymin[0]],V[xID],obs): 
-                E[xID] = Ymin[0]            
+                E[xID] = Ymin[0]
+                if with_plotting:
+                    plt.plot([V[Ymin[0]][0],V[xID][0]],[V[Ymin[0]][1],V[xID][1]],'b')          
                 Hnew.add((Ymin[1],xID))
                 W.remove(xID)
         
@@ -146,7 +149,7 @@ def FMT(k,rk,region,obs,goal,max_iter):
         z = V[zID]       
         iteration += 1
 
-    if failure == 0:
+    if failure == 0 and iteration != max_iter:
         pathIDs = [zID]
         while not zID == 0:
             zID = E[zID]
@@ -154,6 +157,7 @@ def FMT(k,rk,region,obs,goal,max_iter):
         pathIDs.reverse()
         path = [V[pID] for pID in pathIDs]
     else:   # dummy path variable for case of failure.
+        failure = 1
         path = 0
 
 

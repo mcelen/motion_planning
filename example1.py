@@ -10,13 +10,15 @@ from fmt import *
 
 k = 1000
 rk = .05
-region = region.Region((0.,0.),(1.,1.))
+workspace = region.Region((0.,0.),(1.,1.))
 obs = [region.Region((.1,.1),(.4,.4)),region.Region((.6,.6),(.9,.9)),region.Region((.6,.1),(1.0,.5))]
 goal = region.Region((.9,.9),(1.,1.))
 max_iter = 1000
 
+xinit = (.5,.1)
+
 # FMT Algorithm
-path = FMT(k,rk,region,obs,goal,max_iter)
+path = FMT(k,rk,xinit,workspace,obs,goal,max_iter)
 
 if path[1] == 0:
 	

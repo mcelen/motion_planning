@@ -10,7 +10,7 @@ from trajectory_optimization import *
 from trajectory_plotting import *
 
 # Construct our region
-region = region.Region((0.,0.),(1.,1.))
+workspace = region.Region((0.,0.),(1.,1.))
 
 # Construct our path and plot it
 P = [[.1,i*.05] for i in range(1,19)]
