@@ -36,21 +36,22 @@ print path
 
 if path[1] == 0:
 	
-	# Make bubbles
+	# Turn P into numpy array
 	P = asarray(path[0])
-	bubbles = BubbleGeneration(P,obs,.1)
 
 	# Plot
 	for obstacle in obs:
 	    obstacle.plot_region()
 	goal.plot_region()
 	PlotTrajectory(P)
-	PlotBubbles(bubbles)
 
 	# Save Figure and clear
 	plt.title("Example 3 Unsmoothed Trajectory")
 	plt.savefig("ex3_unsmoothed_path.pdf")
 	plt.clf()
+
+	# Make Bubbles
+	bubbles = BubbleGeneration(P,obs,.1)
 
 	# Elastic Stretching and Speed Optimization
 	u = 5*ones((P.shape[0]-2,2))
@@ -72,10 +73,12 @@ if path[1] == 0:
 	plt.clf()
 
 	# Plot Speed Trajectory 
-	y = array(v)
-	x = arange(len(y))
-	plt.plot(x,y)
-	plt.title("Speed for Example 3")
-	plt.xlabel("Index of Waypoint")
+	v = concatenate((asarray([[0.,0.]]),v),axis = 0) # We must add zeros because speed_optimization does not return first and last waypoint
+	v = concatenate((v,asarray([[0.,0.]])),axis = 0)
+	plt.plot(v[:,0],v[:,1],'rx-')
+	plt.axis([v.min(0)[0]-.5, 1, -1, v.max(0)[1]+.5]) # set axis to be just large enough to contain trajectory nicely.
+	plt.title("Velocity for Example 3")
+	plt.xlabel("$v_x$")
+	plt.ylabel("$v_y$")
 	plt.savefig("ex3_speed.pdf")
 
