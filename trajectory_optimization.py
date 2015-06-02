@@ -189,7 +189,6 @@ def speed_optimization(P):
 	prob = Problem(objective,constraints)
 	result = prob.solve(solver=SCS)
 
-	print b.value
 	# Extract Trajectory From Solution
 	P = P[1:-1,:] # Get rid of points added to aid with boundary conditions
 	v = .5*(sp[:-1,:] + sp[1:,:])*asarray(b.value[1:-1])**(.5)

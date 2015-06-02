@@ -20,7 +20,7 @@ P = asarray(P)
 u = 5*ones((P.shape[0]-2,2))
 v = P[2:,:] - P[0:-2,:]
 P = elastic_stretching(P,v,u,bubbles)
-region.plot_region()
+workspace.plot_region()
 PlotTrajectory(P)
 PlotBubbles(bubbles)
 plt.title("Sharp Turn Trajectory")
@@ -30,14 +30,13 @@ plt.clf()
 # Do speed optimization and see that it slows down for sharp turn
 result = speed_optimization(P)
 v = result[0]
-u = result[1]
-y = array(sum(v**2,1)**(.5))
-x = arange(len(y))
-plt.plot(x,y)
-plt.title("Speed with Sharp Turn")
-plt.xlabel("Index of Waypoint")
-plt.ylabel("$||v||_2$")
-plt.savefig("ex2_speed.pdf")
-plt.clf()
 
+v = concatenate((asarray([[0.,0.]]),v),axis = 0) # We must add zeros because speed_optimization does not return first and last waypoint
+v = concatenate((v,asarray([[0.,0.]])),axis = 0)
+plt.plot(v[:,0],v[:,1],'rx-')
+plt.axis([v.min(0)[0]-.5, v.max(0)[0]+.5, v.min(0)[1]-.5, v.max(0)[1]+.5]) # set axis to be just large enough to contain trajectory nicely.
+plt.title("Velocity for Example 2")
+plt.xlabel("$v_x$")
+plt.ylabel("$v_y$")
+plt.savefig("ex2_velocity.pdf")
 
