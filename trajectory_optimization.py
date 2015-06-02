@@ -180,7 +180,7 @@ def speed_optimization(P):
 
 	# Add Constraints
 	constraints = [abs(u[:,0]) <= Ulong,(b[1:]-b[:-1])/(n-1.) == 2.*a,square(u)*ones((2,1)) <= (mu*m*g)**2,b[0] == 0,b[-1]==0]
-	for i in  range(n-1):
+	for i in  range(n):
 	    R = asmatrix([[sp[i,0],sp[i,1]],[- sp[i,1],sp[i,0]]])/(sum(asarray(sp[i,:])**2)**(.5))
 	    more_constraints = [u[i,:]*R == m*sp[i:i+1,:]*a[i] + m*spp[i:i+1,:]*(b[i]+b[i+1])/2.]
 	    constraints.extend(more_constraints)
@@ -189,6 +189,7 @@ def speed_optimization(P):
 	prob = Problem(objective,constraints)
 	result = prob.solve(solver=SCS)
 
+	print b.value
 	# Extract Trajectory From Solution
 	P = P[1:-1,:] # Get rid of points added to aid with boundary conditions
 	v = .5*(sp[:-1,:] + sp[1:,:])*asarray(b.value[1:-1])**(.5)
