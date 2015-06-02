@@ -16,11 +16,6 @@ obs = [region.Region((.1,.1),(.4,.4)),region.Region((.3,.6),(.9,.9)),region.Regi
 goal = region.Region((.1,1.5),(.2,1.7))
 max_iter = 1000
 
-# for obstacle in obs:
-#     obstacle.plot_region()
-# goal.plot_region()
-# plt.savefig("ex3_unsmoothed_path.pdf")
-
 xinit = (.5,.1)
 
 # FMT Algorithm
