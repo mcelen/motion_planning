@@ -1,7 +1,7 @@
 from math import *
 from numpy import *
 from cvxpy import *
-import classes
+import region
 
 def dist(p1,p2):
     """ Returns distance between p1 and p2. """
@@ -89,6 +89,7 @@ def BubbleGeneration(P,obs,r_l):
             bubble = TranslateBubble(bubble,r_l,obs)
             R[i] = bubble[1]
             A[i] = bubble[0]
+    R = [.8*r for r in R] # Shrinkage to avoid hitting obstacles during smoothing.
     return[A,R]
 
 def elastic_stretching(P,v,u,bubbles):
