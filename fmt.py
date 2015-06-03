@@ -11,12 +11,12 @@ def in_any_obstacle(obs,pt):
             return True
     return False
 
-def SampleFree(k,obs,region):
+def SampleFree(k,obs,reg):
     """ Samples k points from region that don't intersect any obtacles, uniformly at random."""
     # Does not check for duplicate points, but duplicates are exceedingly unlikely.
     points = []
     while len(points) < k:
-        pt = region.uniform_sample()
+        pt = reg.uniform_sample()
         if not in_any_obstacle(obs,pt):
             points.append(pt)
     return points
@@ -49,6 +49,7 @@ def Near(V,obs,neighbors,zID,r):
             Nzset.add(pID)
     neighbors[zID] = [Nz,Nzset]
 
+
  
 def ComputeMin(Ynear,Cost,xID,neighbors):
     """ Dynamic Programming Step: Computes argmin_{y in Ynear}(Cost(y,T=(V,E))+Cost(y,x)) and the associated cost. """
@@ -66,23 +67,33 @@ def ComputeMin(Ynear,Cost,xID,neighbors):
 
     return (ymin,curr_cost)
 
-def FMT(k,rk,xinit,region,obs,goal,max_iter,with_plotting = False):
+def offline_sampling(k,rk,xinit,reg,obs):
+    V = [xinit]
+    for pt in SampleFree(k,obs,reg):
+        V.append(pt)
+    neighbors = {}
+    for i in range(k+1):
+        Near(V,obs,neighbors,i,rk)
+    return(V,neighbors)
+
+def FMT(k,rk,xinit,reg,obs,goal,max_iter,V=[],neighbors={},with_plotting = False):
     """ Implements FMT Algorithm. Returns path to destination as list of points, and indication of failure, in tuple (path,failure). """
 
     ### DATA STRUCTURES INITIALIZATION ###
 
     # Sample points and initialize V
-    V = [xinit]
-    for pt in SampleFree(k,obs,region):
-        V.append(pt)
-    V.append((.5,.5))
+    if not V:
+        V = [xinit]
+        for pt in SampleFree(k,obs,reg):
+            V.append(pt)
+
+    # Initialize neighbors (see documentation for description)
+    if not neighbors:
+        neighbors = {}
+        Near(V,obs,neighbors,0,rk) # points nearby to xinit
 
     # Initialize set W of points not in tree, excluding xinit (ie. 0)
     W = set(range(1,len(V)))
-
-    # Initialize neighbors (see documentation for description)
-    neighbors = {}
-    Near(V,obs,neighbors,0,rk) # points nearby to xinit
 
     # Initialize frontier of tree H and Hheap
     H = set([0])
