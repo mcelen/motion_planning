@@ -19,6 +19,27 @@ class Region:
         else:
             return False
 
+    def line_hits_obstacle(self,p1,p2):
+        """ Determines whether the line-segment with endpoints p1,p2 hits the obstacle. Returns true if it does. Assumes p1 and p2 are not in obstacle. """
+        # first checks intersection with left edge, the procedes clockwise.
+        if (p1[0]-self.lower_left[0])*(p2[0]-self.lower_left[0]) < 0:
+            yhit = p1[1] + (self.lower_left[0]-p1[0])/(p2[0]-p1[0])*(p2[1]-p1[1])
+            if self.upper_right[1] > yhit and self.lower_left[1] < yhit:
+                return True
+        if (p1[1]-self.upper_right[1])*(p2[1]-self.upper_right[1]) < 0:
+            xhit = p1[0] + (self.upper_right[1]-p1[1])/(p2[1]-p1[1])*(p2[0]-p1[0])
+            if self.upper_right[0] > xhit and self.lower_left[0] < xhit:
+                return True
+        if (p1[0]-self.upper_right[0])*(p2[0]-self.upper_right[0]) < 0:
+            yhit = p1[1] + (self.upper_right[0]-p1[0])/(p2[0]-p1[0])*(p2[1]-p1[1])
+            if self.upper_right[1] > yhit and self.lower_left[1] < yhit:
+                return True
+        if (p1[1]-self.lower_left[1])*(p2[1]-self.lower_left[1]) < 0:
+            xhit = p1[0] + (self.lower_left[1]-p1[1])/(p2[1]-p1[1])*(p2[0]-p1[0])
+            if self.upper_right[0] > xhit and self.lower_left[0] < xhit:
+                return True
+        return False
+
     def dist_to_point(self,pt):
         """ Returns the closest point in Obstacle to pt, as well as the distance between them, in tuple (closestpt,distance). """
         

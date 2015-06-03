@@ -35,7 +35,7 @@ v = concatenate((asarray([[0.,0.]]),v),axis = 0) # We must add zeros because spe
 v = concatenate((v,asarray([[0.,0.]])),axis = 0)
 plt.plot(v[:,0],v[:,1],'rx-')
 plt.axis([v.min(0)[0]-.5, v.max(0)[0]+.5, v.min(0)[1]-.5, v.max(0)[1]+.5]) # set axis to be just large enough to contain trajectory nicely.
-plt.title("Velocity for Example 2")
+plt.title("Velocity for Sharp Turn Trajectory")
 plt.xlabel("$v_x$")
 plt.ylabel("$v_y$")
 plt.savefig("ex2_velocity.pdf")

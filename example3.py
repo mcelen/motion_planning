@@ -35,13 +35,14 @@ if path[1] == 0:
 	P = asarray(path[0])
 
 	# Plot
+	plt.axis([0.,1.,0.,2.])
 	for obstacle in obs:
 	    obstacle.plot_region()
 	goal.plot_region()
 	PlotTrajectory(P)
 
 	# Save Figure and clear
-	plt.title("Example 3 Unsmoothed Trajectory")
+	plt.title("Optimal Unsmoothed Trajectory")
 	plt.savefig("ex3_unsmoothed_path.pdf")
 	plt.clf()
 
@@ -58,12 +59,13 @@ if path[1] == 0:
 		u = result[1]
 
 	# Plot Smoothed Path and Clear
+	plt.axis([0.,1.,0.,2.])
 	for obstacle in obs:
 	    obstacle.plot_region()
 	goal.plot_region()
 	PlotTrajectory(P)
 	PlotBubbles(bubbles)
-	plt.title("Example 3 Smoothed Trajectory")
+	plt.title("Smoothed Trajectory with Bubbles")
 	plt.savefig("ex3_smoothed_path.pdf")
 	plt.clf()
 
@@ -72,7 +74,7 @@ if path[1] == 0:
 	v = concatenate((v,asarray([[0.,0.]])),axis = 0)
 	plt.plot(v[:,0],v[:,1],'rx-')
 	plt.axis([v.min(0)[0]-.5, 1, -1, v.max(0)[1]+.5]) # set axis to be just large enough to contain trajectory nicely.
-	plt.title("Velocity for Example 3")
+	plt.title("Velocity with Waypoint")
 	plt.xlabel("$v_x$")
 	plt.ylabel("$v_y$")
 	plt.savefig("ex3_speed.pdf")
