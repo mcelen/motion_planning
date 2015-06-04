@@ -21,7 +21,7 @@ class Region:
 
     def line_hits_obstacle(self,p1,p2):
         """ Determines whether the line-segment with endpoints p1,p2 hits the obstacle. Returns true if it does. Assumes p1 and p2 are not in obstacle. """
-        # first checks intersection with left edge, the procedes clockwise.
+        # first checks intersection with left edge, then procedes clockwise.
         if (p1[0]-self.lower_left[0])*(p2[0]-self.lower_left[0]) < 0:
             yhit = p1[1] + (self.lower_left[0]-p1[0])/(p2[0]-p1[0])*(p2[1]-p1[1])
             if self.upper_right[1] > yhit and self.lower_left[1] < yhit:
