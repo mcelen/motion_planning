@@ -77,7 +77,7 @@ def offline_sampling(k,rk,xinit,reg,obs):
     return(V,neighbors)
 
 def FMT(k,rk,xinit,reg,obs,goal,max_iter,V=[],neighbors={},with_plotting = False):
-    """ Implements FMT Algorithm. Returns path to destination as list of points, and indication of failure, in tuple (path,failure). """
+    """ Implements FMT* Algorithm. Returns path to destination as list of points, and indication of failure, in tuple (path,failure). """
 
     ### DATA STRUCTURES INITIALIZATION ###
 
