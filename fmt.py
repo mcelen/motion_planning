@@ -26,8 +26,7 @@ def dist(p1,p2):
     return sqrt((p1[0] - p2[0])**2 + (p1[1]-p2[1])**2)
 
 def CollisionFree(p1,p2,obs):
-    """ Creates fine discretization of line segment between p1 and p2, and checks if any point on segment are within the obstacles in obs. """
-    for obstacle in obs:
+    """ Determines whether the line-segment with endpoints p1,p2 is collision-free. Returns true if it does. Assumes p1 and p2 are not in obstacle. """    for obstacle in obs:
         if obstacle.line_hits_obstacle(p1,p2):
             return False
     return True
@@ -68,6 +67,7 @@ def ComputeMin(Ynear,Cost,xID,neighbors):
     return (ymin,curr_cost)
 
 def offline_sampling(k,rk,xinit,reg,obs):
+    """ Sampling of points and computation of nearest neighbors. """"
     V = [xinit]
     for pt in SampleFree(k,obs,reg):
         V.append(pt)
