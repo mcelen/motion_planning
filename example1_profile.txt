@@ -1,24 +1,26 @@
-         5638102 function calls (5564691 primitive calls) in 11.938 seconds
+         5525214 function calls (5455273 primitive calls) in 12.371 seconds
 
    Ordered by: standard name
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
         1    0.000    0.000    0.000    0.000 fmt.py:1(<module>)
-        1    0.002    0.002    0.010    0.010 fmt.py:14(SampleFree)
-   934501    2.163    0.000    2.163    0.000 fmt.py:24(dist)
-    10509    0.025    0.000    0.101    0.000 fmt.py:28(CollisionFree)
-      933    0.594    0.001    2.852    0.003 fmt.py:35(Near)
-      932    0.008    0.000    0.008    0.000 fmt.py:54(ComputeMin)
-     1524    0.002    0.000    0.005    0.000 fmt.py:7(in_any_obstacle)
-        1    0.014    0.014    2.898    2.898 fmt.py:79(FMT)
+        1    0.002    0.002    0.009    0.009 fmt.py:14(SampleFree)
+  1012731    2.339    0.000    2.339    0.000 fmt.py:24(dist)
+    11667    0.053    0.000    0.138    0.000 fmt.py:28(CollisionFree)
+     1938    0.648    0.000    3.119    0.002 fmt.py:35(Near)
+      937    0.005    0.000    0.005    0.000 fmt.py:54(ComputeMin)
+     1520    0.002    0.000    0.005    0.000 fmt.py:7(in_any_obstacle)
+        1    0.001    0.001    3.129    3.129 fmt.py:70(offline_sampling)
+        1    0.010    0.010    0.028    0.028 fmt.py:79(FMT)
 
-        1    0.002    0.002    0.179    0.179 trajectory_optimization.py:1(<module>)
-       29    0.000    0.000    0.001    0.000 trajectory_optimization.py:10(GenerateBubble)
-        5    0.011    0.002    3.639    0.728 trajectory_optimization.py:151(speed_optimization)
-       29    0.002    0.000    0.005    0.000 trajectory_optimization.py:29(TranslateBubble)
-       91    0.000    0.000    0.000    0.000 trajectory_optimization.py:6(dist)
+        1    0.003    0.003    0.381    0.381 trajectory_optimization.py:1(<module>)
+       27    0.000    0.000    0.001    0.000 trajectory_optimization.py:10(GenerateBubble)
+        5    0.011    0.002    3.479    0.696 trajectory_optimization.py:151(speed_optimization)
+       27    0.002    0.000    0.006    0.000 trajectory_optimization.py:29(TranslateBubble)
+       85    0.000    0.000    0.000    0.000 trajectory_optimization.py:6(dist)
         1    0.000    0.000    0.007    0.007 trajectory_optimization.py:76(BubbleGeneration)
-        5    0.006    0.001    3.210    0.642 trajectory_optimization.py:95(elastic_stretching)
+        5    0.006    0.001    3.031    0.606 trajectory_optimization.py:95(elastic_stretching)
         1    0.000    0.000    0.000    0.000 trajectory_plotting.py:1(<module>)
-        2    0.000    0.000    0.013    0.006 trajectory_plotting.py:17(PlotTrajectory)
-        2    0.001    0.000    0.030    0.015 trajectory_plotting.py:5(PlotBubbles)
+        2    0.000    0.000    0.017    0.009 trajectory_plotting.py:17(PlotTrajectory)
+        2    0.000    0.000    0.032    0.016 trajectory_plotting.py:5(PlotBubbles)
+ 

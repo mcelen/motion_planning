@@ -18,8 +18,11 @@ max_iter = 1000
 
 xinit = (.5,.1)
 
+# Offline computation of neighbors
+data = offline_sampling(k,rk,xinit,workspace,obs)
+
 # FMT Algorithm
-path = FMT(k,rk,xinit,workspace,obs,goal,max_iter)
+path = FMT(k,rk,xinit,workspace,obs,goal,max_iter,V=data[0],neighbors = data[1])
 
 if path[1] == 0:
 	
