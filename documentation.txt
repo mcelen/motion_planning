@@ -85,7 +85,7 @@ to the base from E. For example, the following tree:
 		2 < 5
 			6
 
-EXPORTED FUNCTIONS
+FUNCTIONS
 
 SampleFree(k,obs,reg)
 ---------------------
@@ -118,7 +118,7 @@ of nearest neighbors, which substantially decreases computation time.
 
 ========= trajectory_optimization.py =========
 
-EXPORTED FUNCTIONS
+FUNCTIONS
 
 GenerateBubble(pt,obs)
 ----------------------
@@ -153,7 +153,7 @@ Return speeds and controls, defined at the midpoints between the waypoints in P,
 
 ========= trajectory_plotting.py =========
 
-EXPORTED FUNCTIONS
+FUNCTIONS
 
 PlotBubbles(bubbles)
 --------------------
