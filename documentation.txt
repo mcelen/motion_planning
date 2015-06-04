@@ -1,3 +1,35 @@
+========= region.py =========
+
+CLASSES
+
+Region
+--------
+Methods:
+	contains_point(self,pt)
+	-----------------------
+	Returns true if Region contains pt. Returns false otherwise.
+	
+	line_hits_obstacle(self,p1,p2)
+	------------------------------
+	Returns true if the line between points p1 and p2 hits an obstacle. Returns false otherwise.
+	It checks possible intersection with edges sequentially. Note, this function is valid for 
+	rectangular regions only; although discretization methods might be adapted to a larger range
+	of obstacles, it considerably slows down the algorithm
+	
+	dist_to_point(self,pt)
+	----------------------
+	Returns the closest point in Region to pt and the distance between them.
+	This computation is currently valid for rectangular regions only.
+	
+	uniform_sample(self)
+	--------------------
+	Returns a single point sampled uniformly at random in Region
+	
+	plot_region(self)
+	-----------------
+	Plots Region and adds it to current plot.
+	
+
 ========= fmt.py =========
 
 DATA STRUCTURES
@@ -55,6 +87,39 @@ to the base from E. For example, the following tree:
 
 EXPORTED FUNCTIONS
 
+SampleFree(k,obs,reg)
+---------------------
+Samples k points uniformly at random in our space. Returns sampled points that are not in
+any obstacle.
+Note, this function does not check for duplicate points; however, duplicates are very unlikely.
+
+CollisionFree(p1,p2,obs)
+------------------------
+Returns true if an collision-free between points p1 and p2 can be constructed.
+CollisionFree actually calls a function in file region.py.
+
+Near(V,obs,neighbors,zID,r)
+---------------------------
+Computes nearest neighbors for point z with point ID zID.
+For each neighbor p of z, we construct or update a dictionary Nz and a set Nzset that we
+add to neighbors entry for zID (see neighbors data structure).
+This computation can be done offline for improved computation time.
+
+ComputeMin(Ynear,Cost,xID,neighbors)
+------------------------------------
+Returns argmin_{y in Ynear}(Cost(y,T=(V,E))+Cost(y,x)) and the associated cost: this function
+implements the dynamic programming step of the FMT* alogrithm.
+
+offline_sampling(k,rk,xinit,reg,obs)
+------------------------------------
+Calls SampleFree and Near functions. This function is implemented to enable offline computation
+of nearest neighbors, which substantially decreases computation time.
+
+
+========= trajectory_optimization.py =========
+
+EXPORTED FUNCTIONS
+
 GenerateBubble(pt,obs)
 ----------------------
 Returns tuple (center,radius,closestpoint).
@@ -71,24 +136,11 @@ bubble is (center,radius,closestpt), where closestpt is the closest point of an 
 Hence, the normal is the line from closestpt to center.
 
 BubbleGeneration(P,obs,r_l)
--------------------------------
+---------------------------
 Generates a bubble around the points P that do not intersect any obstacles. First creates the largest
 possibe bubble with that center. If that radius is below r_l, attempts to enlarge the 
 bubble to radius r_l by translating the center of the bubble. Uses GenerateBubble and 
 TranslateBubble.
-
-========= classes.py =========
-
-CLASSES
-
-Obstacle
---------
-Methods:
-	--- 
-
-========= trajectory_optimization.py =========
-
-EXPORTED FUNCTIONS
 
 elastic_stretching(P,v,u,bubbles)
 ---------------------------------
@@ -102,10 +154,6 @@ Return speeds and controls, defined at the midpoints between the waypoints in P,
 ========= trajectory_plotting.py =========
 
 EXPORTED FUNCTIONS
-
-PlotRegion(region)
-------------------
-Adds rectangular obstacle given by region to current plot.
 
 PlotBubbles(bubbles)
 --------------------
